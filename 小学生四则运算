@@ -1,0 +1,66 @@
+import random
+def LowCalculate():#三年级以下题目，只涉及两个数字的加减运算
+    while(True):
+        integer1 =random.randint(1, 100)
+        integer2 =random.randint(1, 100)
+        if (integer1 - integer1>0):
+            integer1 = integer1
+            integer2 = integer2
+        break
+    lowsymbol = random.choice("+-")
+    if eval(str(integer1)+str(lowsymbol)+str(integer2))>0:
+        return str(integer1)+str(lowsymbol)+str(integer2)
+def ProperFraction():#产生真分数
+    while(True):
+        molecular = random.randint(1,100)  #分子
+        denominator = random.randint(1,100)  #分母
+        if(molecular<denominator):
+            return str(molecular)+"/"+str(denominator)
+            break
+def blacket():#产生三年级以上题目，含真分数的四则运算
+    left="("
+    right=")"
+    integer=str(random.randint(1,100))
+    symbol=random.choice("+-*/")
+    fraction=ProperFraction()
+    if eval(integer+symbol+fraction)>0:
+        return left+integer+symbol+fraction+right
+def Select():
+    if choice == '1':
+        k=0
+        for i in range (5):
+            a = LowCalculate()
+            a = str(a)
+            b = eval(a)
+            print( a ,"=","请输入答案")
+            answer = input()
+            answer = int(answer)
+            if (abs(answer - b)) == 0:
+                k=k+1
+                print("你的回答正确")
+            else:
+                print("答案错误", "正确答案是：", b)
+        print("你一共答对了", k, "题", "准确率为:", k / 5)
+    if choice == '2':
+        count=0
+        for i in range (5):
+            a=blacket()
+            b=str(random.choice("+-*/"))
+            c=ProperFraction()
+            if eval(a+b+c)>0:
+                print(a,b,c,"=","    请输入答案:")
+            answer = input()
+            answer = float(answer)
+            if (abs(answer-eval(a+b+c)))<0.1:
+                count=count+1
+                print("你的回答正确","准确答案是：",eval(a+b+c))
+            else:
+                print("答案错误","正确答案是：",eval(a+b+c))
+        print("你一共答对了",count,"题","准确率为:",count/5)
+
+if __name__ == '__main__':
+    print("请选择难度，"
+          "三年级以下请输入1",
+          "三年级以上请输入2")
+    choice = input()
+    X=Select()
