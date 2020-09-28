@@ -1,5 +1,6 @@
 import random
 import fractions
+
 def LowCalculate():#三年级以下题目，只涉及两个数字的加减运算
     while(True):
         integer1 =random.randint(1, 10)
@@ -9,6 +10,7 @@ def LowCalculate():#三年级以下题目，只涉及两个数字的加减运算
     lowsymbol = random.choice("+-")
     if eval(str(integer1)+str(lowsymbol)+str(integer2))>0:
         return str(integer1)+str(lowsymbol)+str(integer2)
+
 def ProperFraction():#产生真分数
     while (True):
         molecular = random.randint(1, 20)  # 分子
@@ -39,7 +41,11 @@ def blacket():#产生三年级以上题目，含真分数的四则运算,以及�
         if equation[i] != Fract:
             temp = int(equation[i]*denominator)
             equation[i] = fractions.Fraction(temp,denominator)
-    ans=0#计算运算结果
+    return symbol , equation
+
+def Result():#计算运算结果
+    symbol,equation = blacket()
+    ans=0
     if symbol[0] == "*"and symbol[1] == "+":
         ans = equation[0]*equation[1]+equation[2]
     elif symbol[0] == "*"and symbol[1] == "-":
@@ -53,36 +59,52 @@ def blacket():#产生三年级以上题目，含真分数的四则运算,以及�
     elif symbol[0] == "+" and symbol[1] == "-":
         ans = equation[0] + equation[1] - equation[2]
     return str(equation[0]) + str(symbol[0]) + str(equation[1]) + str(symbol[1]) + str(equation[2]), ans
-def Select():
+
+def Number():#刷题数目
+    try:
+        print("请输入刷题数目")
+        num = input("")
+        num = int(num)
+
+    except(ValueError,ArithmeticError):
+        print("请重新输入数字")
+        num = Number()
+    finally:
+        print("继续运行")
+    return num
+
+def Select():#选择难度
+    Num = Number()
     if choice == '1':
-        k=0
-        for i in range (5):
-            a = LowCalculate()
-            a = str(a)
-            b = eval(a)
-            print( a ,"=","请输入答案")
-            answer = input()
-            answer = int(answer)
-            if (abs(int(answer) -int( b))) == 0:
-                k = k+1
+        count=0
+        for i in range (int(Num)):
+            Que = LowCalculate()
+            Que = str(Que)
+            Res = eval(Que)
+            print( Que ,"=","请输入答案")
+            answer = fractions.Fraction('{}'.format(eval(input()))).limit_denominator()#将输入的结果转换为分数
+            #answer = int(answer)
+            if (abs(int(answer) -int( Res))) == 0:
+                count = count+1
                 print("你的回答正确")
             else:
-                print("答案错误", "正确答案是：", b)
-        print("你一共答对了", k, "题", "准确率为:", k / 5)
-    if choice == '2':
-        count=0
-        for i in range (5):
-            a=blacket()
-            if a[1]>0:
-                print(a[0]+ "=","    请输入答案:")
-            answer = input()
-            answer = fractions.Fraction(float(answer))
-
-            if (a[1]==answer):
-                count=count+1
-                print("你的回答正确","准确答案是：",a[1])
+                print("答案错误", "正确答案是：", Res)
+        print("你一共答对了", count, "题", "准确率为:", count / 5)
+    elif choice == '2':
+        count = 0
+        for i in range(int(Num)):
+            Calculate=Result()
+            if Calculate[1]>0:
+                print(Calculate[0]+ "=","    请输入答案:")
             else:
-                print("答案错误","正确答案是：",a[1])
+                Calculate = Result()
+            answer = fractions.Fraction('{}'.format(eval(input()))).limit_denominator()
+
+            if (Calculate[1]==answer):
+                count=count+1
+                print("你的回答正确","准确答案是：",Calculate[1])
+            else:
+                print("答案错误","正确答案是：",Calculate[1])
         print("你一共答对了",count,"题","准确率为:",count/5)
 
 if __name__ == '__main__':
