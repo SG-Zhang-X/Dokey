@@ -1,0 +1,93 @@
+import random
+import fractions
+def LowCalculate():#三年级以下题目，只涉及两个数字的加减运算
+    while(True):
+        integer1 =random.randint(1, 10)
+        integer2 =random.randint(1, 10)
+        if (integer1 > integer2):
+            break
+    lowsymbol = random.choice("+-")
+    if eval(str(integer1)+str(lowsymbol)+str(integer2))>0:
+        return str(integer1)+str(lowsymbol)+str(integer2)
+def ProperFraction():#产生真分数
+    while (True):
+        molecular = random.randint(1, 20)  # 分子
+        denominator = random.randint(1, 20)  # 分母
+        if (molecular > denominator):
+            Fract = fractions.Fraction(molecular, denominator)
+            molecular = Fract.numerator  # 提取分子
+            denominator = int(Fract.denominator)  # 提取分母
+            return molecular, denominator
+
+def blacket():#产生三年级以上题目，含真分数的四则运算,以及返回结果
+    left = "("
+    right = ")"
+    integer1 = str(random.randint(1, 10))
+    integer2 = str(random.randint(1, 10))
+    symbol = random.sample("+-*", 2)
+    fraction = ProperFraction()
+    fraction = fractions.Fraction(fraction[0],fraction[1])#输出分数
+    molecular =fraction.numerator#提取分子
+    denominator =int(fraction.denominator)#提取分母
+    value = [integer1, integer2, fraction]
+    equation = random.sample(value, 3)
+    for i in range(3):
+        if isinstance(equation[i],int)==False:
+            Fract = equation[i]
+            equation[i] = float(Fract)
+    for i in range(3):
+        if equation[i] != Fract:
+            temp = int(equation[i]*denominator)
+            equation[i] = fractions.Fraction(temp,denominator)
+    ans=0#计算运算结果
+    if symbol[0] == "*"and symbol[1] == "+":
+        ans = equation[0]*equation[1]+equation[2]
+    elif symbol[0] == "*"and symbol[1] == "-":
+        ans = equation[0]*equation[1]-equation[2]
+    elif symbol[0] == "+"and symbol[1] == "*":
+        ans = equation[1]*equation[2]+equation[0]
+    elif symbol[0] == "-" and symbol[1] == "*":
+        ans = equation[0]-equation[1]*equation[2]
+    elif symbol[0] == "-" and symbol[1] == "+":
+        ans = equation[0] - equation[1] + equation[2]
+    elif symbol[0] == "+" and symbol[1] == "-":
+        ans = equation[0] + equation[1] - equation[2]
+    return str(equation[0]) + str(symbol[0]) + str(equation[1]) + str(symbol[1]) + str(equation[2]), ans
+def Select():
+    if choice == '1':
+        k=0
+        for i in range (5):
+            a = LowCalculate()
+            a = str(a)
+            b = eval(a)
+            print( a ,"=","请输入答案")
+            answer = input()
+            answer = int(answer)
+            if (abs(int(answer) -int( b))) == 0:
+                k = k+1
+                print("你的回答正确")
+            else:
+                print("答案错误", "正确答案是：", b)
+        print("你一共答对了", k, "题", "准确率为:", k / 5)
+    if choice == '2':
+        count=0
+        for i in range (5):
+            a=blacket()
+            if a[1]>0:
+                print(a[0]+ "=","    请输入答案:")
+            answer = input()
+            answer = fractions.Fraction(float(answer))
+
+            if (a[1]==answer):
+                count=count+1
+                print("你的回答正确","准确答案是：",a[1])
+            else:
+                print("答案错误","正确答案是：",a[1])
+        print("你一共答对了",count,"题","准确率为:",count/5)
+
+if __name__ == '__main__':
+    print("请选择难度，"
+          "三年级以下请输入1",
+          "三年级以上请输入2")
+    choice = input()
+    X=Select()
